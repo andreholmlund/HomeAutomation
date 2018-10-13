@@ -10,6 +10,11 @@ namespace HomeAutomation.Web.Controllers
     public class ValuesController : Controller
     {
         // GET api/values
+        /// <summary>
+        /// List all public gists sorted by most recently updated to least recently updated.
+        /// </summary>
+        /// <remarks>With pagination, you can fetch up to 3000 gists. For example, you can fetch 100 pages with 30 gists per page or 30 pages with 100 gists per page.</remarks>
+
         [HttpGet]
         public IEnumerable<string> Get()
         {
