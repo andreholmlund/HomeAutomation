@@ -9,12 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Models\Background\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire" Version="1.6.20" />
+    <PackageReference Include="Hangfire.MemoryStorage" Version="1.5.2" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
+    <PackageReference Include="Unosquare.Raspberry.IO" Version="0.17.2" />
   </ItemGroup>
 
   <ItemGroup>

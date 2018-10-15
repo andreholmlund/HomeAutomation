@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO;
+using Hangfire;
+using Hangfire.MemoryStorage;
+using HomeAutomation.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
 using Swashbuckle.AspNetCore.Swagger;
+
 
 namespace HomeAutomation.Web
 {
@@ -25,7 +24,10 @@ namespace HomeAutomation.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHangfire(_ => _.UseMemoryStorage());
+
             services.AddMvc();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info
@@ -38,6 +40,8 @@ namespace HomeAutomation.Web
                 // Configure Swagger to use the xml documentation file
                 c.IncludeXmlComments(Path.ChangeExtension(typeof(Startup).Assembly.Location, ".xml"));
             });
+
+            services.AddTransient<IRaspberryPiService, RaspberryPiService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +51,8 @@ namespace HomeAutomation.Web
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
